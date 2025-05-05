@@ -1,6 +1,6 @@
 import React, { Fragment, useState } from "react";
 import { Prompt } from "react-router-dom";
-
+import emailjs from 'emailjs-com';
 import classes from "./contactForm.module.css";
 import Button from "../UI/Button";
 import useInput from "../../hooks/useInput";
@@ -78,13 +78,26 @@ const ContactForm = (props) => {
         setBtnText((prevValue)=>'Sending ...');
         setIsSent(true);
         setBtnText((prevValue) => 'Message Sent');
-        await fetch('https://talenthub-xssk.onrender.com/portfolio/add',{
-            method:'POST',
+        await fetch('http://localhost:3001/send-email', { // ou sua URL hospedada
+            method: 'POST',
             headers: {
-                'Content-Type': 'application/json',
+              'Content-Type': 'application/json',
             },
-            body:JSON.stringify(message)
-        });
+            body: JSON.stringify(message)
+          });
+          const serviceID = 'seu_service_id';
+    const templateID = 'seu_template_id';
+    const userID = 'seu_user_id'; // public key do EmailJS
+
+    try {
+        await emailjs.send(serviceID, templateID, message, userID);
+        setBtnText('Message Sent');
+    } catch (error) {
+        console.error('Erro ao enviar e-mail:', error);
+        setBtnText('Send Failed');
+        setIsSent(false);
+    }
+        
     }
 
     const finishEnteringHandler=()=>{
@@ -106,7 +119,7 @@ const ContactForm = (props) => {
                 'Are You Sure You Want To Leave ? All your entered data will be lost!'}
             />
             <div className={classes.contactFormCard}>
-                <h1 style={{ color: nonThemeColor }}>Leave A Message</h1>
+                <h1 style={{ color: nonThemeColor }}>Deixe uma mensagem</h1>
                 <form onFocus={formFocussedHandler} action="" onSubmit={formSubmitHandler} className={formClasses}>
                     <input value={enteredName}
                         onBlur={nameBlurHandler}
