@@ -1,0 +1,24 @@
+.btn{
+    height: 3rem;
+    padding: 5px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 1.5rem;
+    font-weight: 700;
+    background-color: rgb(54, 91, 194);
+    color:white
+}
+.btn:hover{
+    cursor: pointer;
+    border: 2px solid rgb(105, 161, 235);
+    background-color: rgb(141, 169, 230);
+    color: rgb(74, 145, 238);
+}
+.btn:disabled,
+.btn:disabled:hover,
+.btn:disabled:active{
+  background-color: #ccc;
+  color: #292929;
+  border-color: #ccc;
+  cursor: not-allowed;
+}
